@@ -18,6 +18,7 @@ public class GrappleAction : MonoBehaviour
 
     public float pullForce = 10f;
     public float gravProximity = 5f;
+        public float turnProximity = 20f;
     public bool inProximity;
 
     [SerializeField] private float distanceTotal;
@@ -46,10 +47,15 @@ public class GrappleAction : MonoBehaviour
         if (activated) {
             
             distanceCurr = Vector3.Distance(target.transform.position, transform.position) - (gravProximity + 5f);
-            distanceFraction = 1.0f - (distanceCurr/distanceTotal);
-            middleRotation = Quaternion.Lerp(savedRotation, targetRotation, distanceFraction);
+            
+            if (distanceCurr <= turnProximity) { 
 
-            transform.rotation = middleRotation;
+                distanceFraction = 1.0f - (distanceCurr/turnProximity);
+                middleRotation = Quaternion.Lerp(savedRotation, targetRotation, distanceFraction);
+
+                transform.rotation = middleRotation;
+            
+            }
 
             var move = Input.GetAxis("Mouse Y");
 
