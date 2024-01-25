@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateAction : MonoBehaviour
+public class SlideAction : MonoBehaviour
 {
-
     public bool activated = false;
     [SerializeField] private PushAndPull pap;
 
     public GameObject target;
 
-    public float rotatePower = 1f;
+    public float slidePower = 50f;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +28,8 @@ public class RotateAction : MonoBehaviour
 
         if (activated) {
 
-            target.transform.RotateAround(target.transform.position, transform.right, move * rotatePower * Time.deltaTime);
+            var dir = transform.forward * move * Time.deltaTime * slidePower;
+            target.transform.position += dir;
 
         }
         

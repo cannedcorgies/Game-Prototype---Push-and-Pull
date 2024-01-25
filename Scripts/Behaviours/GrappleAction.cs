@@ -17,7 +17,7 @@ public class GrappleAction : MonoBehaviour
     public float sensitivity = 0.75f;
 
     public float pullForce = 10f;
-    public float gravProximity = 5f;
+    public float gravProximity = 2f;
         public float turnProximity = 20f;
     public bool inProximity;
 
@@ -112,8 +112,6 @@ public class GrappleAction : MonoBehaviour
     void OnEnable()
     {
 
-        Debug.Log("PAP TARGET - " + pap.target);
-        target = pap.target;
         distanceTotal = Vector3.Distance(target.transform.position, transform.position) - (gravProximity + 5f);
 
         pap.DisableControl(false, false, false);
@@ -122,10 +120,7 @@ public class GrappleAction : MonoBehaviour
         savedRotation = transform.rotation;
             savedTransform = transform;
 
-        //Vector3 directionToGrapple = target.transform.position - transform.position;
-        targetRotation = target.transform.rotation;//Quaternion.LookRotation(directionToGrapple, transform.up) * transform.rotation;//target.transform.localEulerAngles;
-        Debug.Log("TO EULER: " + targetRotation.eulerAngles);
-        
+        targetRotation = target.transform.rotation;
         activated = true;
 
         Debug.Log("HI FROM GRAPPLE ACTION");

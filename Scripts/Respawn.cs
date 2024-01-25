@@ -11,12 +11,12 @@ public class Respawn : MonoBehaviour
         public bool fallDeath = true;
     public float respawnDistance = 1000f;
         public bool distanceDeath = false;
+    
+    public Vector3 direction = new Vector3(0, 0, 0);
 
     // Start is called before the first frame update
     void Start()
     {
-        
-
 
     }
 
@@ -47,8 +47,19 @@ public class Respawn : MonoBehaviour
         }
 
         transform.position = respawnPoint.transform.position;
+        //transform.rotation = Quaternion.Euler(direction);
 
         Debug.Log("Respawned");
+
+    }
+
+    void OnTriggerEnter(Collider other) {
+
+        if (other.tag == "Respawn") {
+
+            respawnPoint = other.transform.parent.gameObject;
+
+        }
 
     }
 }

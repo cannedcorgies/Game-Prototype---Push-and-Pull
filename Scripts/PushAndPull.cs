@@ -6,6 +6,9 @@ using UnityEngine;
 public class PushAndPull : MonoBehaviour
 {
 
+    public bool activated;
+        public bool imHere;
+
     public FirstPersonCamera fpc;
         public Movement movement;
         public CustomGravity cg;
@@ -16,6 +19,7 @@ public class PushAndPull : MonoBehaviour
         [SerializeField] private bool behaviorActivated;
         public GrappleAction ga;
         public RotateAction ra;
+        public SlideAction sa;
     
     public Camera cam;
         public GameObject cameraPivot;
@@ -29,6 +33,8 @@ public class PushAndPull : MonoBehaviour
     void Start()
     {
 
+        imHere = false;
+
         cam = Camera.main;
 
         fpc = cam.gameObject.GetComponent<FirstPersonCamera>();
@@ -41,14 +47,23 @@ public class PushAndPull : MonoBehaviour
 
         ga = GetComponent<GrappleAction>();
         ra = GetComponent<RotateAction>();
-        ga.enabled = false;
-        ra.enabled = false;
+        sa = GetComponent<SlideAction>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (!imHere) {
+
+            imHere = true;
+
+            ga.enabled = false;
+            ra.enabled = false;
+            sa.enabled = false;
+
+        }
 
         BehaviorManagement();
         
@@ -93,6 +108,7 @@ public class PushAndPull : MonoBehaviour
             if (Input.GetMouseButtonDown(1)) {
 
                 behaviorActivated = true;
+                ga.target = target;
                 ga.enabled = true;
 
             }
@@ -108,7 +124,24 @@ public class PushAndPull : MonoBehaviour
             if (Input.GetMouseButtonDown(1)) {
 
                 behaviorActivated = true;
+                ra.target = target;
                 ra.enabled = true;
+
+            }
+
+        }
+
+        // if rotating component found
+        if (hitObject.GetComponent<SlideComponent>()) {
+
+            objectFound = true;
+            target = hitObject;
+
+            if (Input.GetMouseButtonDown(1)) {
+
+                behaviorActivated = true;
+                sa.target = target;
+                sa.enabled = true;
 
             }
 
@@ -157,18 +190,8 @@ public class PushAndPull : MonoBehaviour
 
             ga.enabled = false;
             ra.enabled = false;
+            sa.enabled = false;
             EnableControl();
-
-            //CameraLookAtTarget();
-            //cameraPivot.transform.parent = transform;
-            //transform.rotation = Quaternion.Euler(transform.localEulerAngles.x, -cam.transform.localEulerAngles.y, transform.localEulerAngles.z);
-
-        }
-
-        else if (behaviorActivated) {
-
-            //CameraLookAtTarget();
-            //cameraPivot.transform.position = transform.position;
 
         }
 
@@ -179,8 +202,6 @@ public class PushAndPull : MonoBehaviour
         Vector3 relativePos = target.transform.position - cam.gameObject.transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos, transform.up);
         cam.transform.rotation = rotation;
-
-        //cam.transform.rotation = Quaternion.Euler(cam.transform.rotation.x, cam.transform.rotation.y, 0f);
 
     }
 
