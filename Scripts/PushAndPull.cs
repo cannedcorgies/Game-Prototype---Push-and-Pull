@@ -20,6 +20,7 @@ public class PushAndPull : MonoBehaviour
         public GrappleAction ga;
         public RotateAction ra;
         public SlideAction sa;
+        public ScaleAction sca;
     
     public Camera cam;
         public GameObject cameraPivot;
@@ -48,6 +49,7 @@ public class PushAndPull : MonoBehaviour
         ga = GetComponent<GrappleAction>();
         ra = GetComponent<RotateAction>();
         sa = GetComponent<SlideAction>();
+        sca = GetComponent<ScaleAction>();
 
     }
 
@@ -62,6 +64,7 @@ public class PushAndPull : MonoBehaviour
             ga.enabled = false;
             ra.enabled = false;
             sa.enabled = false;
+            sca.enabled = false;
 
         }
 
@@ -147,6 +150,22 @@ public class PushAndPull : MonoBehaviour
 
         }
 
+        // if rotating component found
+        if (hitObject.GetComponent<ScaleComponent>()) {
+
+            objectFound = true;
+            target = hitObject;
+
+            if (Input.GetMouseButtonDown(1)) {
+
+                behaviorActivated = true;
+                sca.target = target;
+                sca.enabled = true;
+
+            }
+
+        }
+
 
         // was a behavior found?
         if (objectFound || behaviorActivated) {
@@ -191,6 +210,7 @@ public class PushAndPull : MonoBehaviour
             ga.enabled = false;
             ra.enabled = false;
             sa.enabled = false;
+            sca.enabled = false;
             EnableControl();
 
         }

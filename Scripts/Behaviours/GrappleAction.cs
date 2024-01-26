@@ -20,6 +20,8 @@ public class GrappleAction : MonoBehaviour
     public float gravProximity = 2f;
         public float turnProximity = 20f;
     public bool inProximity;
+    public float gravProxRatio = 0.5f;
+        [SerializeField] private float gravBubble;
 
     [SerializeField] private float distanceTotal;
     [SerializeField] private float distanceCurr;
@@ -37,6 +39,8 @@ public class GrappleAction : MonoBehaviour
         activated = false;
         
         pap = GetComponent<PushAndPull>();
+
+        gravBubble = turnProximity * gravProxRatio;
 
     }
 
@@ -83,6 +87,16 @@ public class GrappleAction : MonoBehaviour
 
             }
 
+            if (distanceCurr <= gravBubble) {
+
+                inProximity = true;
+
+            } else {
+
+                inProximity = false;
+
+            }
+
         }
 
     }
@@ -96,7 +110,7 @@ public class GrappleAction : MonoBehaviour
 
                 transform.rotation = savedRotation;
 
-            } else { }//transform.up = target.transform.up; }
+            } else { transform.rotation = targetRotation; }
 
             activated = false;
 

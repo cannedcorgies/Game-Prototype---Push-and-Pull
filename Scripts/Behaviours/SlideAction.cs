@@ -10,6 +10,8 @@ public class SlideAction : MonoBehaviour
     public GameObject target;
 
     public float slidePower = 50f;
+        public float maxDistance = 20f;
+        public Vector3 maxVector;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,10 @@ public class SlideAction : MonoBehaviour
             var dir = transform.forward * move * Time.deltaTime * slidePower;
             target.transform.position += dir;
 
+            target.transform.position = new Vector3 (Mathf.Clamp(target.transform.position.x, maxVector.x - maxDistance, maxVector.x + maxDistance),
+                                                        Mathf.Clamp(target.transform.position.y, maxVector.y - maxDistance, maxVector.y + maxDistance),
+                                                        Mathf.Clamp(target.transform.position.z, maxVector.z - maxDistance, maxVector.z + maxDistance));
+
         }
         
     }
@@ -51,6 +57,10 @@ public class SlideAction : MonoBehaviour
 
         pap.DisableControl(false, false, false);
         activated = true;
+
+        var slidey = target.gameObject.GetComponent<SlideComponent>();
+        maxVector = slidey.startPos;
+        maxDistance = slidey.maxDistance;
 
     }
 
